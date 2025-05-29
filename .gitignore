@@ -1,0 +1,1 @@
+-e "tasks.db\n__pycache__/\n*.pyc" 
