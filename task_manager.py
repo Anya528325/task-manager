@@ -776,11 +776,9 @@ class TaskManagerApp:
         edit_win.configure(bg="#f5f7fa")
         edit_win.grab_set()
         
-        # Основной фрейм
         main_frame = ttk.Frame(edit_win, style="Card.TFrame")
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
-        # Поля для редактирования
         ttk.Label(main_frame, text="Название:").pack(pady=(10, 2), padx=10, anchor=tk.W)
         title_entry = ttk.Entry(main_frame, width=50)
         title_entry.pack(padx=10, fill=tk.X)
@@ -813,7 +811,6 @@ class TaskManagerApp:
         status_combo.pack(padx=10, anchor=tk.W)
         status_combo.set(task[4] if task[4] else "Новая")
         
-        # Кнопка сохранения
         btn_frame = ttk.Frame(main_frame)
         btn_frame.pack(pady=20)
         
@@ -846,7 +843,7 @@ class TaskManagerApp:
         window.destroy()
         self.load_tasks()
         self.update_stats_tab()
-        self.calendar.update_calendar()  # Обновляем календарь
+        self.calendar.update_calendar() 
         messagebox.showinfo("Успех", "Задача успешно обновлена!")
     
     def export_to_csv(self):
@@ -865,7 +862,6 @@ class TaskManagerApp:
                 writer.writerow(['ID', 'Название', 'Описание', 'Дата', 'Статус', 'Категория'])
                 
                 for task in tasks:
-                    # Преобразование даты в формат ДД.ММ.ГГГГ
                     try:
                         task_date = datetime.strptime(task[3], "%Y-%m-%d")
                         formatted_date = task_date.strftime("%d.%m.%Y")
