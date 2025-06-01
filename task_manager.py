@@ -887,7 +887,6 @@ class TaskManagerApp:
     
     def update_stats_tab(self):
         """Обновляет вкладку статистики"""
-        # Находим фреймы для графиков
         status_frame = None
         category_frame = None
         
@@ -913,7 +912,6 @@ class TaskManagerApp:
         try:
             conn = sqlite3.connect('tasks.db')
             cursor = conn.cursor()
-            # Проверяем существование таблицы
             cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='tasks'")
             table_exists = cursor.fetchone()
             conn.close()
@@ -924,7 +922,7 @@ class TaskManagerApp:
             self.initialize_database()
     
     def initialize_database(self):
-        """Инициализирует базу данных"""
+        """Иницфиализирует базу данных"""
         # Используем тот же код, что и в скрипте инициализации
         conn = sqlite3.connect('tasks.db')
         cursor = conn.cursor()
