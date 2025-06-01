@@ -117,15 +117,12 @@ class CalendarTab:
         self.update_calendar()
     
     def create_widgets(self):
-        # Панель управления календарем
         control_frame = ttk.Frame(self.parent, style="Card.TFrame")
         control_frame.pack(fill=tk.X, padx=10, pady=10)
         
-        # Кнопки навигации
         ttk.Button(control_frame, text="◀", width=3, 
                   command=lambda: self.change_month(-1), style="Accent.TButton").pack(side=tk.LEFT, padx=5)
         
-        # Отображение текущего месяца и года
         self.month_year_var = tk.StringVar()
         self.month_year_label = ttk.Label(control_frame, textvariable=self.month_year_var, 
                                         font=('Segoe UI', 12, 'bold'), foreground="#2c3e50")
@@ -137,7 +134,6 @@ class CalendarTab:
         ttk.Button(control_frame, text="Сегодня", 
                   command=self.go_to_today, style="Accent.TButton").pack(side=tk.RIGHT)
         
-        # Дни недели
         days_frame = ttk.Frame(self.parent, style="Card.TFrame")
         days_frame.pack(fill=tk.X, padx=10, pady=(0, 5))
         
@@ -151,7 +147,6 @@ class CalendarTab:
             label.grid(row=0, column=i, sticky="nsew", padx=1, pady=1)
             days_frame.columnconfigure(i, weight=1)
         
-        # Календарная сетка
         self.calendar_frame = ttk.Frame(self.parent)
         self.calendar_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
         
@@ -488,21 +483,18 @@ class TaskManagerApp:
         ttk.Combobox(filter_frame, textvariable=self.category_filter_var, 
                     values=categories_filter, state="readonly", width=12).grid(row=0, column=5, padx=10, pady=5)
         self.category_filter_var.trace_add("write", lambda *args: self.load_tasks())
-        
-        # Таблица задач
+
         tree_frame = ttk.Frame(self.tasks_tab, style="Card.TFrame")
         tree_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
         
         self.tree = ttk.Treeview(tree_frame, columns=("ID", "Название", "Описание", "Дата", "Статус", "Категория"), 
                                 show="headings", selectmode="browse")
         
-        # Настройка скроллбара
         scrollbar = ttk.Scrollbar(tree_frame, orient="vertical", command=self.tree.yview)
         self.tree.configure(yscrollcommand=scrollbar.set)
         scrollbar.pack(side="right", fill="y")
         self.tree.pack(fill="both", expand=True)
         
-        # Заголовки столбцов
         columns = {
             "ID": {"width": 50, "anchor": tk.CENTER},
             "Название": {"width": 150, "anchor": tk.W},
@@ -516,12 +508,10 @@ class TaskManagerApp:
             self.tree.heading(col, text=col)
             self.tree.column(col, **settings)
         
-        # Теги для цветовой индикации
         self.tree.tag_configure('completed', background='#e6f7ea')
         self.tree.tag_configure('overdue', background='#fde8e8')
         self.tree.tag_configure('in_progress', background='#e6f0ff')
         
-        # Привязка двойного клика для редактирования
         self.tree.bind("<Double-1>", self.edit_task)
     
     def create_calendar_tab(self):
@@ -530,10 +520,8 @@ class TaskManagerApp:
     
     def on_date_select(self, date):
         """Обработчик выбора даты в календаре"""
-        # Переключаемся на вкладку задач
         self.notebook.select(0)
         
-        # Устанавливаем выбранную дату
         try:
             year, month, day = date.split('-')
             formatted_date = f"{int(day):02d}.{int(month):02d}.{year}"
@@ -543,39 +531,31 @@ class TaskManagerApp:
             pass
     
     def create_stats_tab(self):
-        # Фрейм для статистики
         stats_frame = ttk.Frame(self.stats_tab)
         stats_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
         
-        # Контейнер для графиков
         container = ttk.Frame(stats_frame)
         container.pack(fill=tk.BOTH, expand=True)
         
-        # График статусов
         status_frame = ttk.LabelFrame(container, text="📊 Распределение по статусам", 
                                    style="Card.TLabelframe")
         status_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
         
-        # График категорий
         category_frame = ttk.LabelFrame(container, text="📊 Распределение по категориям", 
                                      style="Card.TLabelframe")
         category_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
         
-        # Обновление статистики
         self.update_stats(status_frame, category_frame)
     
     def update_stats(self, status_frame, category_frame):
-        # Очищаем предыдущие графики
         for widget in status_frame.winfo_children():
             widget.destroy()
         
         for widget in category_frame.winfo_children():
             widget.destroy()
         
-        # Получаем данные
         status_stats, category_stats = self.db.get_task_stats()
         
-        # Создаем график для статусов
         fig1 = plt.Figure(figsize=(6, 4), dpi=80, facecolor='#f5f7fa')
         ax1 = fig1.add_subplot(111, facecolor='#f5f7fa')
         
