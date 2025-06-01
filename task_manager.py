@@ -735,7 +735,7 @@ class TaskManagerApp:
         self.db.mark_done(task_id)
         self.load_tasks()
         self.update_stats_tab()
-        self.calendar.update_calendar()  # Обновляем календарь
+        self.calendar.update_calendar()  
     
     def delete_task(self):
         selected = self.tree.selection()
@@ -748,7 +748,7 @@ class TaskManagerApp:
             self.db.delete_task(task_id)
             self.load_tasks()
             self.update_stats_tab()
-            self.calendar.update_calendar()  # Обновляем календарь
+            self.calendar.update_calendar()  
     
     def edit_task(self, event):
         selected = self.tree.selection()
@@ -759,7 +759,6 @@ class TaskManagerApp:
         task_data = self.tree.item(item, 'values')
         task_id = task_data[0]
         
-        # Получаем полные данные о задаче из БД
         conn = sqlite3.connect('tasks.db')
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM tasks WHERE id = ?", (task_id,))
@@ -769,7 +768,6 @@ class TaskManagerApp:
         if not task:
             return
         
-        # Создаем окно редактирования
         edit_win = tk.Toplevel(self.root)
         edit_win.title("Редактирование задачи")
         edit_win.geometry("500x400")
